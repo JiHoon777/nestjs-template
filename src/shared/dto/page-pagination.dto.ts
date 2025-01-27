@@ -2,9 +2,11 @@ import { IsArray, IsNumber, IsPositive } from 'class-validator'
 
 export class PagePaginationRequestDto {
   @IsNumber()
+  @IsPositive()
   page: number
 
   @IsNumber()
+  @IsPositive()
   size: number
 }
 

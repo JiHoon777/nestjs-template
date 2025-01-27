@@ -11,7 +11,6 @@ import { Response } from 'express'
 
 import { ErrorCode } from '../consts/error-code.consts'
 
-// Todo: Refactor
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   private logger = new Logger(this.constructor.name)
@@ -22,7 +21,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     const errorResponse = createErrorResponse(
       ErrorCode.INTERNAL_SERVER_ERROR,
-      '서버 오류가 발생했습니다.',
+      exception.message ?? '서버 오류가 발생했습니다.',
     )
     let status = HttpStatus.INTERNAL_SERVER_ERROR
 

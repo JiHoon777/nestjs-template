@@ -1,0 +1,22 @@
+{
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "never"
+    },
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact"
+    ],
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "eslint.workingDirectories": [
+      {
+        "mode": "auto"
+      }
+    ],
+    "eslint.format.enable": true,
+    "eslint.enable": true,
+    "eslint.alwaysShowStatus": true,
+    "eslint.debug": true
+  }
+  

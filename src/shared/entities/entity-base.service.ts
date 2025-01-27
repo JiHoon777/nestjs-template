@@ -105,24 +105,32 @@ export abstract class BaseEntityService<T_Entity extends BaseEntity> {
     /** 커스텀 쿼리를 추가하기 위한 데코레이터 함수 */
     decorator?: (qb: SelectQueryBuilder<T_Entity>) => void
   }): Promise<[T_Entity[], number]> {
-    const { page, size } = payload.pageOpt
+    const { order, pageOpt, decorator } = payload
+    const { page, size } = pageOpt
     const take = size
     const skip = (page - 1) * take
 
     let qb = this.repository.createQueryBuilder('e')
 
-    if (payload.decorator) {
-      payload.decorator(qb)
+    if (decorator) {
+      decorator(qb)
     }
 
     qb = qb.skip(skip).take(take)
 
-    if (!payload.order) {
+    if (!order) {
       qb = qb.orderBy(`e.id`, 'DESC')
     } else {
-      Object.entries(payload.order).map(([key, value]) => {
-        qb = qb.addOrderBy(key, value)
+      // 'e.id'를 제외한 정렬 항목을 추가
+      const orderEntries = Object.entries(order).filter(
+        ([key, _]) => key !== 'e.id',
+      )
+      orderEntries.forEach(([key, value]) => {
+        qb.addOrderBy(key, value)
       })
+
+      // 항상 'e.id'를 마지막 정렬 항목으로 추가하여 안정 정렬 보장
+      qb.addOrderBy('e.id', order['e.id'] ?? 'DESC')
     }
 
     return qb.getManyAndCount()

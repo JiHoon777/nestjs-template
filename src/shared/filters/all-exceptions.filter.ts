@@ -23,17 +23,15 @@ export class AllExceptionsFilter implements ExceptionFilter {
       ErrorCode.INTERNAL_SERVER_ERROR,
       exception.message ?? '서버 오류가 발생했습니다.',
     )
-    let status = HttpStatus.INTERNAL_SERVER_ERROR
 
     this.logger.error(host)
     this.logger.error(exception)
 
     if (exception instanceof HttpException) {
-      status = exception.getStatus()
       const errorResponse = exception.getResponse() as any
 
       return response
-        .status(status)
+        .status(exception.getStatus())
         .json(
           createErrorResponse(
             errorResponse.cause ?? ErrorCode.INTERNAL_SERVER_ERROR,
@@ -44,6 +42,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
         )
     }
 
-    response.status(status).json(errorResponse)
+    return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json(errorResponse)
   }
 }

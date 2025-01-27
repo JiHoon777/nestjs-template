@@ -4,10 +4,9 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common'
+import { IApiResponse } from '@shared/utils'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
-
-import { IApiResponse } from '../interfaces/api-response.interface'
 
 @Injectable()
 export class TransformInterceptor<T>

@@ -1,5 +1,11 @@
 import type { ErrorCode } from '@shared/consts'
-import type { IApiResponse } from '@shared/interfaces'
+
+export interface IApiResponse<T> {
+  success: boolean
+  data: T
+  errorCode: string | null
+  errorMessage: string | null
+}
 
 export function createSuccessResponse<T>(data: T): IApiResponse<T> {
   return {

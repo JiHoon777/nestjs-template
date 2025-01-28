@@ -1,3 +1,4 @@
+import { User, UserModule } from '@modules/user'
 import { MiddlewareConsumer, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -30,11 +31,12 @@ import {
           password: databaseConfig.password,
           database: databaseConfig.name,
           synchronize: appConfig === 'local',
-          entities: [],
+          entities: [User],
         }
       },
       inject: [ConfigService],
     }),
+    UserModule,
   ],
   providers: [],
 })

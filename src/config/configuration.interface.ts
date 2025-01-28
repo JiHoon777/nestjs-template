@@ -13,9 +13,16 @@ interface JwtConfig {
   refreshSecretExpiration: string
 }
 
+interface RedisConfig {
+  host: string
+  port: number
+  password: string
+}
+
 export interface IConfiguration {
   port: number
   env: string
   database: DatabaseConfig
   jwt: JwtConfig
+  redis: RedisConfig
 }

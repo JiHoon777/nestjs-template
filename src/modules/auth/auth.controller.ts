@@ -9,8 +9,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 
-import { Public } from './auth.common'
 import { AuthService } from './auth.service'
+import { Public } from './decorators'
 import { CurrentUser } from './decorators/current-user.decorator'
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh-auth.guard'
 import { LocalAuthGuard } from './guards/local-auth.guard'

@@ -1,3 +1,4 @@
+import { RedisModule } from '@liaoliaots/nestjs-redis'
 import { User, UserModule } from '@modules/user'
 import { MiddlewareConsumer, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
@@ -32,6 +33,20 @@ import {
           database: databaseConfig.name,
           synchronize: appConfig === 'local',
           entities: [User],
+        }
+      },
+      inject: [ConfigService],
+    }),
+    RedisModule.forRootAsync({
+      useFactory: (configService: ConfigService<IConfiguration>) => {
+        const redisConfig = configService.get('redis', { infer: true })
+
+        return {
+          config: {
+            host: redisConfig.host,
+            port: redisConfig.port,
+            password: redisConfig.password,
+          },
         }
       },
       inject: [ConfigService],

@@ -18,9 +18,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
     configService: ConfigService<IConfiguration>,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        (request: Request) => request.cookies?.Refresh,
-      ]),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: configService.get('jwt', { infer: true }).refreshSecretKey,
       ignoreExpiration: false,
       passReqToCallback: true,
@@ -28,8 +26,9 @@ export class JwtRefreshStrategy extends PassportStrategy(
   }
 
   async validate(request: Request, payload: IJwtPayload) {
+    const refreshToken = request.headers.authorization?.split('Bearer ')[1]
     const authUser = await this.authService.validateUserRefreshToken(
-      request.cookies?.Refresh,
+      refreshToken,
       payload.userId,
     )
 

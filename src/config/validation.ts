@@ -14,4 +14,8 @@ export const validationConfigSchema = Joi.object({
   JWT_SECRET_EXPIRATION: Joi.string().required(),
   JWT_REFRESH_SECRET_KEY: Joi.string().required(),
   JWT_REFRESH_SECRET_EXPIRATION: Joi.string().required(),
+
+  REDIS_HOST: Joi.string().required(),
+  REDIS_PORT: Joi.number().required(),
+  REDIS_PASSWORD: Joi.string().required(),
 })

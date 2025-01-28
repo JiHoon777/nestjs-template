@@ -16,4 +16,9 @@ export const configuration = (): IConfiguration => ({
     refreshSecretKey: process.env.JWT_REFRESH_SECRET_KEY,
     refreshSecretExpiration: process.env.JWT_REFRESH_SECRET_EXPIRATION,
   },
+  redis: {
+    host: process.env.REDIS_HOST,
+    port: parseInt(process.env.REDIS_PORT, 10) || 6379,
+    password: process.env.REDIS_PASSWORD,
+  },
 })

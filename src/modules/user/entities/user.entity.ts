@@ -34,5 +34,8 @@ export class User extends BaseEntity {
   role: UserRole
 
   @Column({ type: 'text', nullable: true })
+  @Exclude({
+    toPlainOnly: true,
+  })
   refreshToken: string | null
 }

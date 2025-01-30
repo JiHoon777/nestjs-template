@@ -17,19 +17,33 @@ export class AuthService {
     return this.configService.get('jwt', { infer: true })
   }
 
-  async signin(user: User): Promise<{
-    user: User
-    accessToken: string
-    refreshToken: string
-  }> {
-    const { accessToken, refreshToken } = await this.generateTokens(user)
+  async signin(
+    user: User,
+  ): Promise<User & { accessToken: string; refreshToken: string }> {
+    const {
+      accessToken,
+      refreshToken,
+      // expiresAccessToken,
+      // expiresRefreshToken,
+    } = await this.generateTokens(user)
 
     const hashedRefreshToken = await hash(refreshToken, 10)
     await this.usersService.update(user.id, {
       refreshToken: hashedRefreshToken,
     })
 
-    return { user, accessToken, refreshToken }
+    // response.cookie('Authentication', accessToken, {
+    //   httpOnly: true,
+    //   secure: this.configService.get('env') === 'prod',
+    //   expires: expiresAccessToken,
+    // })
+    // response.cookie('Refresh', refreshToken, {
+    //   httpOnly: true,
+    //   secure: this.configService.get('env') === 'prod',
+    //   expires: expiresRefreshToken,
+    // })
+
+    return { ...user, accessToken, refreshToken }
   }
 
   async signup({
@@ -50,7 +64,20 @@ export class AuthService {
   }
 
   async signout(userId: number) {
-    await this.usersService.updateRefreshToken(userId, null)
+    await this.usersService.update(userId, {
+      refreshToken: null,
+    })
+
+    // response.cookie('Authentication', '', {
+    //   httpOnly: true,
+    //   secure: this.configService.get('env') === 'prod',
+    //   expires: new Date(0),
+    // })
+    // response.cookie('Refresh', '', {
+    //   httpOnly: true,
+    //   secure: this.configService.get('env') === 'prod',
+    //   expires: new Date(0),
+    // })
 
     return { message: '로그아웃되었습니다.' }
   }
@@ -75,6 +102,7 @@ export class AuthService {
       refreshToken,
       user.refreshToken,
     )
+
     if (isRefreshTokenMatching) {
       const { password: _, ...result } = user
       return result
@@ -84,6 +112,16 @@ export class AuthService {
   }
 
   private async generateTokens(user: Omit<User, 'password'>) {
+    // const expiresAccessToken = new Date()
+    // expiresAccessToken.setMilliseconds(
+    //   expiresAccessToken.getTime() + parseInt(this.jwtConfig.secretExpiration),
+    // )
+    // const expiresRefreshToken = new Date()
+    // expiresRefreshToken.setMilliseconds(
+    //   expiresRefreshToken.getTime() +
+    //     parseInt(this.jwtConfig.refreshSecretExpiration),
+    // )
+
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         { userId: user.id },
@@ -104,6 +142,8 @@ export class AuthService {
     return {
       accessToken,
       refreshToken,
+      // expiresAccessToken,
+      // expiresRefreshToken,
     }
   }
 }

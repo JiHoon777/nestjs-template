@@ -1,4 +1,5 @@
 import { RedisModule } from '@liaoliaots/nestjs-redis'
+import { AuthModule } from '@modules/auth'
 import { User, UserModule } from '@modules/user'
 import { MiddlewareConsumer, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
@@ -52,6 +53,7 @@ import {
       inject: [ConfigService],
     }),
     UserModule,
+    AuthModule,
   ],
   providers: [],
 })

@@ -17,6 +17,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp()
+    const request = ctx.getRequest<Request>()
     const response = ctx.getResponse<Response>()
 
     const errorResponse = createErrorResponse(
@@ -24,17 +25,18 @@ export class AllExceptionsFilter implements ExceptionFilter {
       exception.message ?? '서버 오류가 발생했습니다.',
     )
 
-    this.logger.error(host)
-    this.logger.error(exception)
+    this.logger.error(request.headers)
+    this.logger.error(exception.message)
 
     if (exception instanceof HttpException) {
       const errorResponse = exception.getResponse() as any
+      this.logger.error(errorResponse.message)
 
       return response
         .status(exception.getStatus())
         .json(
           createErrorResponse(
-            errorResponse.cause ?? ErrorCode.INTERNAL_SERVER_ERROR,
+            ErrorCode[errorResponse.message] ?? ErrorCode.INTERNAL_SERVER_ERROR,
             Array.isArray(errorResponse.message)
               ? errorResponse.message[0]
               : (errorResponse.message ?? exception.message),

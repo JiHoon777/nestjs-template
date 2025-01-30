@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { AllExceptionsFilter } from '@shared/filters'
 import { TransformInterceptor } from '@shared/interceptors'
+import * as cookieParser from 'cookie-parser'
 
 import { AppModule } from './app.module'
 
@@ -11,6 +12,7 @@ async function bootstrap() {
   app.useLogger(['error', 'warn', 'log', 'debug', 'verbose'])
   app.useGlobalFilters(new AllExceptionsFilter())
   app.useGlobalInterceptors(new TransformInterceptor())
+  app.use(cookieParser())
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -24,7 +26,7 @@ async function bootstrap() {
   )
 
   app.enableCors({
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
     credentials: true,
   })
 

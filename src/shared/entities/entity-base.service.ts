@@ -39,13 +39,13 @@ export abstract class BaseEntityService<T_Entity extends BaseEntity> {
    * ID로 엔티티를 조회합니다
    * @param id 조회할 엔티티의 ID
    * @returns 조회된 엔티티
-   * @throws {ErrorCode.COMMON_NOT_FOUND} 엔티티가 존재하지 않는 경우
+   * @throws {HttpException} 엔티티가 존재하지 않는 경우
    */
   async findById(id: number): Promise<T_Entity> {
     const entity = await this.repository.findOneBy({
       id,
     } as FindOptionsWhere<T_Entity>)
-    ensureIf(entity, ErrorCode.COMMON_NOT_FOUND)
+    ensureIf(entity, ErrorCode.CommonNotFound)
     return entity
   }
 
@@ -53,7 +53,7 @@ export abstract class BaseEntityService<T_Entity extends BaseEntity> {
    * ID로 엔티티를 업데이트합니다
    * @param id 업데이트할 엔티티의 ID
    * @param input 업데이트할 데이터
-   * @throws {ErrorCode.COMMON_NO_INPUT} 업데이트할 데이터가 없는 경우
+   * @throws {HttpException} 업데이트할 데이터가 없는 경우
    */
   async update(
     id: number,
@@ -61,7 +61,7 @@ export abstract class BaseEntityService<T_Entity extends BaseEntity> {
   ): Promise<void> {
     ensureIf(
       Object.keys(omitBy(input, (v) => v === undefined)).length > 0,
-      ErrorCode.COMMON_NO_INPUT,
+      ErrorCode.CommonNoInput,
     )
 
     await this.repository.update({ id } as FindOptionsWhere<T_Entity>, input)

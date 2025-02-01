@@ -1,22 +1,19 @@
 export enum ErrorCode {
-  COMMON_NOT_FOUND = 'COMMON_NOT_FOUND',
-  COMMON_NO_INPUT = 'COMMON_NO_INPUT',
+  CommonNotFound = 'COMMON_NOT_FOUND',
+  CommonNoInput = 'COMMON_NO_INPUT',
 
-  AUTH_UNAUTHORIZED = 'AUTH_UNAUTHORIZED',
-  AUTH_TOKEN_EXPIRED = 'AUTH_TOKEN_EXPIRED',
-  AUTH_REFRESH_TOKEN_EXPIRED = 'AUTH_REFRESH_TOKEN_EXPIRED',
+  // 401
+  Unauthorized = 'Unauthorized',
 
   // 500
-  INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
+  InternalServerError = 'InternalServerError',
 }
 
 export const ErrorCodeMessage: Record<ErrorCode, string> = {
-  [ErrorCode.COMMON_NOT_FOUND]: 'Not Found',
-  [ErrorCode.COMMON_NO_INPUT]: 'No Input data',
+  [ErrorCode.CommonNotFound]: 'Not Found',
+  [ErrorCode.CommonNoInput]: 'No Input data',
 
-  [ErrorCode.AUTH_UNAUTHORIZED]: 'Unauthorized',
-  [ErrorCode.AUTH_TOKEN_EXPIRED]: 'Token is expired',
-  [ErrorCode.AUTH_REFRESH_TOKEN_EXPIRED]: 'Refresh token is expired',
+  [ErrorCode.Unauthorized]: 'Unauthorized',
 
-  [ErrorCode.INTERNAL_SERVER_ERROR]: 'Internal Server Error',
+  [ErrorCode.InternalServerError]: 'Internal Server Error',
 }

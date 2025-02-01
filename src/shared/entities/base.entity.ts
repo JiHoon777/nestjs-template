@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger'
 import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
@@ -5,12 +6,21 @@ import {
 } from 'typeorm'
 
 export abstract class BaseEntity {
+  @ApiProperty({ example: 1, description: 'Entity ID' })
   @PrimaryGeneratedColumn()
   id: number
 
+  @ApiProperty({
+    example: '2024-01-01T00:00:00.000Z',
+    description: 'Entity 생성 날짜',
+  })
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date
 
+  @ApiProperty({
+    example: '2024-01-01T00:00:00.000Z',
+    description: 'Entity 수정 날짜',
+  })
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date
 

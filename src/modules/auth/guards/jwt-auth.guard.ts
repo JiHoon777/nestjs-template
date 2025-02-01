@@ -7,8 +7,6 @@ import { Reflector } from '@nestjs/core'
 import { JsonWebTokenError, TokenExpiredError } from '@nestjs/jwt'
 import { AuthGuard } from '@nestjs/passport'
 
-import { Public } from '../decorators'
-
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor(private reflector: Reflector) {
@@ -16,12 +14,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   canActivate(context: ExecutionContext) {
-    const isPublic = this.reflector.get(Public, context.getHandler())
-
-    if (isPublic) {
-      return true
-    }
-
     return super.canActivate(context)
   }
 

@@ -18,7 +18,7 @@ export class AuthService {
   }
 
   async signin(user: User): Promise<
-    Omit<User, 'password' | 'createdAt' | 'updatedAt'> & {
+    Omit<User, 'password'> & {
       accessToken: string
       refreshToken: string
     }
@@ -30,8 +30,7 @@ export class AuthService {
       refreshToken: hashedRefreshToken,
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, createdAt, updatedAt, ...result } = user
+    const { password: _, ...result } = user
     return { ...result, accessToken, refreshToken }
   }
 
@@ -55,14 +54,9 @@ export class AuthService {
     await this.usersService.update(userId, {
       refreshToken: null,
     })
-
-    return { message: '로그아웃되었습니다.' }
   }
 
-  async validateUser(
-    email: string,
-    password: string,
-  ): Promise<Omit<User, 'password'> | null> {
+  async validateUser(email: string, password: string): Promise<User | null> {
     const user = await this.usersService.findOneByEmail(email)
 
     if (user && (await compare(password, user.password))) {

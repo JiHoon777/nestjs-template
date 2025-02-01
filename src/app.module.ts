@@ -1,5 +1,5 @@
 import { RedisModule } from '@liaoliaots/nestjs-redis'
-import { AuthModule } from '@modules/auth'
+import { AuthModule } from '@modules/auth/auth.module'
 import { User, UserModule } from '@modules/user'
 import { MiddlewareConsumer, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
